@@ -1,0 +1,356 @@
+/* Reset and ensure full page */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.valentine-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffe0e6 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 40px 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+  width: 100%;
+  max-width: 800px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============ SCREEN 1: ASKING ============ */
+.valentine-title {
+  font-size: 3.5rem;
+  color: #ff6b9d;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 4px rgba(255, 107, 157, 0.3);
+}
+
+.hearts-emoji {
+  display: inline-block;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.valentine-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 40px;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  min-height: 100px;
+  position: relative;
+}
+
+.btn-yes {
+  background: linear-gradient(135deg, #ff85a2 0%, #ff6b9d 100%);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.3rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+}
+
+.btn-yes:hover {
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+}
+
+.btn-no {
+  background: #e0e0e0;
+  color: #666;
+  border: none;
+  padding: 12px 30px;
+  font-size: 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  z-index: 100;
+}
+
+/* ============ SCREEN 2: ACCEPTED ============ */
+.accepted-screen {
+  padding: 20px;
+}
+
+.party-emoji {
+  font-size: 4rem;
+  margin-bottom: 10px;
+  animation: bounce 0.5s ease infinite alternate;
+}
+
+.accepted-title {
+  font-size: 3rem;
+  color: #ff6b9d;
+  margin-bottom: 15px;
+}
+
+.accepted-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.gifs-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.gif-box {
+  background: #f5f5f5;
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.gif-box img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+}
+
+.stuck-text {
+  font-size: 1.8rem;
+  color: #ff6b9d;
+  margin-bottom: 40px;
+}
+
+.change-mind-section {
+  margin-top: 20px;
+}
+
+.change-mind-text {
+  font-size: 1rem;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+.btn-change-mind {
+  background: #e8e8e8;
+  color: #666;
+  border: none;
+  padding: 12px 30px;
+  font-size: 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  z-index: 100;
+}
+
+.btn-change-mind:hover {
+  background: #ddd;
+}
+
+/* ============ TOO LATE SECTION ============ */
+.too-late-section {
+  margin-top: 40px;
+  padding-top: 30px;
+  animation: fadeInUp 0.8s ease forwards;
+  width: 100%;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.divider {
+  font-size: 1.2rem;
+  color: #ffb6c1;
+  margin-bottom: 30px;
+  letter-spacing: 5px;
+}
+
+.too-late-title {
+  font-size: 2.8rem;
+  color: #ff6b9d;
+  margin-bottom: 15px;
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.too-late-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.rules-list {
+  margin-bottom: 30px;
+}
+
+.rule {
+  font-size: 1.2rem;
+  color: #ff6b9d;
+  margin: 15px 0;
+  animation: slideIn 0.5s ease forwards;
+  opacity: 0;
+}
+
+.rule:nth-child(1) { animation-delay: 0.2s; }
+.rule:nth-child(2) { animation-delay: 0.4s; }
+.rule:nth-child(3) { animation-delay: 0.6s; }
+.rule:nth-child(4) { animation-delay: 0.8s; }
+
+.rule.green {
+  color: #4CAF50;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.deal-with-it {
+  font-size: 2rem;
+  color: #ff9800;
+  margin-bottom: 30px;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.final-gif {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.final-gif img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
+
+/* ============ ANIMATIONS ============ */
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Floating Hearts */
+.floating-heart {
+  position: fixed;
+  bottom: -50px;
+  animation: float-up 3s ease-out forwards;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+@keyframes float-up {
+  0% {
+    bottom: -50px;
+    opacity: 1;
+  }
+  100% {
+    bottom: 100vh;
+    opacity: 0;
+  }
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+  .valentine-title,
+  .accepted-title {
+    font-size: 2rem;
+  }
+
+  .too-late-title {
+    font-size: 2rem;
+  }
+
+  .valentine-subtitle,
+  .accepted-subtitle {
+    font-size: 1rem;
+  }
+
+  .btn-yes {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+  }
+
+  .gif-box img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .stuck-text {
+    font-size: 1.4rem;
+  }
+
+  .rule {
+    font-size: 1rem;
+    padding: 0 10px;
+  }
+
+  .deal-with-it {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,159 @@
+.date-ideas-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+  margin-bottom: 60px;
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeIn 0.8s ease;
+}
+
+.date-ideas-title {
+  font-size: 2.2rem;
+  color: #ff6b9d;
+  margin-bottom: 10px;
+  font-style: italic;
+  text-align: center;
+}
+
+.date-ideas-subtitle {
+  font-size: 1rem;
+  color: #888;
+  margin-bottom: 30px;
+}
+
+/* ============ DATE IDEAS LIST ============ */
+.date-ideas-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.date-idea-item {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #fff9fa 0%, #fff0f3 100%);
+  padding: 18px 25px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(255, 107, 157, 0.1);
+  animation: slideIn 0.5s ease forwards;
+  opacity: 0;
+}
+
+.date-idea-item:hover {
+  transform: translateX(10px);
+  box-shadow: 0 5px 20px rgba(255, 107, 157, 0.2);
+  background: linear-gradient(135deg, #fff0f3 0%, #ffe8ed 100%);
+}
+
+.date-idea-item.checked {
+  background: linear-gradient(135deg, #ffe8ed 0%, #ffd6e0 100%);
+  border-left: 4px solid #ff6b9d;
+}
+
+.date-idea-item.checked .idea-text {
+  color: #ff6b9d;
+}
+
+/* ============ IDEA CONTENT ============ */
+.idea-emoji {
+  font-size: 1.5rem;
+  margin-right: 15px;
+  min-width: 30px;
+}
+
+.idea-text {
+  flex: 1;
+  font-size: 1.05rem;
+  color: #555;
+  line-height: 1.5;
+  transition: color 0.3s ease;
+}
+
+.check-mark {
+  font-size: 1.2rem;
+  margin-left: 15px;
+  transition: transform 0.3s ease;
+}
+
+.date-idea-item:hover .check-mark {
+  transform: scale(1.2);
+}
+
+/* ============ CHECKED COUNT ============ */
+.checked-count {
+  margin-top: 30px;
+  font-size: 1.1rem;
+  color: #ff6b9d;
+  text-align: center;
+  animation: fadeInUp 0.5s ease;
+}
+
+/* ============ ANIMATIONS ============ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+  .date-ideas-container {
+    padding: 20px 15px;
+  }
+
+  .date-ideas-title {
+    font-size: 1.6rem;
+  }
+
+  .date-idea-item {
+    padding: 15px 18px;
+  }
+
+  .idea-emoji {
+    font-size: 1.3rem;
+    margin-right: 12px;
+  }
+
+  .idea-text {
+    font-size: 0.95rem;
+  }
+
+  .date-idea-item:hover {
+    transform: translateX(5px);
+  }
+}
