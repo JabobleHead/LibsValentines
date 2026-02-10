@@ -6,7 +6,7 @@ const Valentine: React.FC = () => {
   const [yesScale, setYesScale] = useState<number>(1);
   const [noPosition, setNoPosition] = useState<{ x: number; y: number } | null>(null);
   const [changeMindPosition, setChangeMindPosition] = useState<{ x: number; y: number } | null>(null);
-  const [changeMindAttempts, setChangeMindAttempts] = useState<number>(0);
+  const [, setChangeMindAttempts] = useState<number>(0);
   const [showTooLate, setShowTooLate] = useState<boolean>(false);
   const [hearts, setHearts] = useState<number[]>([]);
   
