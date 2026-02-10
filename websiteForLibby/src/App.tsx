@@ -7,11 +7,11 @@ import PhotoSlideshow from './components/FavoritePic';
 
 const photos = [
   {
-    src: 'public/Photos/DodgeParkWalk.jpeg',
+    src: '/Photos/DodgeParkWalk.jpeg',
     caption: 'The day we first met 💕 I rember we had a diffent aaaaaaaaadsadsadasdsadsadsadasdsadasdsadasdasdsaasdsadasdsa'
   },
   {
-    src: 'public/Photos/FirstTimeIGotYouFlowers.jpeg',
+    src: '/Photos/FirstTimeIGotYouFlowers.jpeg',
     caption: 'The first time I got you flowers'
   }
 ];
