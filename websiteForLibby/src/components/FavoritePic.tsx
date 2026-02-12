@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './PhotoSlideshow.css';
+import './PhotoSlideShow.css';
 
 interface Photo {
   src: string;
