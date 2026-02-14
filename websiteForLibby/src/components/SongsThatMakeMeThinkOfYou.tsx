@@ -11,21 +11,22 @@ const SpotifySongs: React.FC = () => {
   const [hoveredSong, setHoveredSong] = useState<string | null>(null);
   // Add your Spotify track IDs here
   const songs: Song[] = [
-    {
+      {
       id: '1',
-      spotifyId: '3pBYIDSYwHpGMjq0nss6KZ?si=196dfb97447d4eed', // Replace with your track ID
-      note: "Your always worth the wait"
-    },
-    {
-      id: '2',
       spotifyId: '7c1KTn1z8Gw8ouYdcF4qaG?si=799b231b33734162', // Replace with your track ID
       note: "Reminds me of the first night, we hung out"
     },
-    {
-      id: '3',
+      {
+      id: '2',
       spotifyId: '6qqrTXSdwiJaq8SO0X2lSe?si=c6718d4091254227', // Replace with your track ID
       note: "I can't hear without just thinking of you and how you make me feel"
     },
+    {
+      id: '3',
+      spotifyId: '3pBYIDSYwHpGMjq0nss6KZ?si=196dfb97447d4eed', // Replace with your track ID
+      note: "Your always worth the wait"
+    }
+  
   ];
 
   // Optional: Your playlist ID

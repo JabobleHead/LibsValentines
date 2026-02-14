@@ -51,7 +51,7 @@ const ThingsILove: React.FC = () => {
 
     
       <div className="footer-decoration">
-        <p>😘 Come back for more 😘</p>
+        <p>😘 Come back for more tommorow for more perchance 😘</p>
       </div>
     </div>
   );
