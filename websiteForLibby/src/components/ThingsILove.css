@@ -1,0 +1,192 @@
+.things-i-love-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 40px 30px;
+  background: linear-gradient(180deg, #fff5f7 0%, #ffe4ea 100%);
+  border-radius: 25px;
+  box-shadow: 0 10px 40px rgba(255, 182, 193, 0.25);
+}
+
+/* ==================== Header ==================== */
+.things-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.things-title {
+  font-family: 'Georgia', serif;
+  font-size: 2.2rem;
+  color: #e63b7a;
+  margin: 0 0 20px 0;
+  font-weight: 700;
+}
+
+.title-emoji {
+  display: inline-block;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.things-subtitle {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  color: #888;
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 15px 25px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+}
+
+/* ==================== Cards Grid ==================== */
+.love-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 10px 0;
+}
+
+.love-card {
+  background: linear-gradient(135deg, #ffb6c8 0%, #f8a5b8 100%);
+  border-radius: 15px;
+  padding: 20px;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  cursor: default;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(248, 165, 184, 0.3);
+}
+
+.love-card:hover,
+.love-card.hovered {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(248, 165, 184, 0.5);
+  background: linear-gradient(135deg, #ffc4d4 0%, #ffafc4 100%);
+}
+
+.love-text {
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.love-emoji {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-size: 1rem;
+  opacity: 0.9;
+  transition: transform 0.3s ease;
+}
+
+.love-card:hover .love-emoji {
+  transform: scale(1.3);
+}
+
+/* ==================== Footer Decoration ==================== */
+.footer-decoration {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+  font-size: 1.5rem;
+}
+
+.footer-decoration span {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.footer-decoration span:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.footer-decoration span:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* ==================== Alternating Card Colors ==================== */
+.love-card:nth-child(even) {
+  background: linear-gradient(135deg, #f8a5b8 0%, #f4929e 100%);
+}
+
+.love-card:nth-child(even):hover {
+  background: linear-gradient(135deg, #ffb0c4 0%, #ffa0ae 100%);
+}
+
+.love-card:nth-child(3n) {
+  background: linear-gradient(135deg, #ffcad4 0%, #ffb6c8 100%);
+}
+
+.love-card:nth-child(3n):hover {
+  background: linear-gradient(135deg, #ffd6de 0%, #ffc4d4 100%);
+}
+
+/* ==================== Responsive ==================== */
+@media (max-width: 768px) {
+  .things-i-love-container {
+    margin: 20px 15px;
+    padding: 30px 20px;
+  }
+
+  .things-title {
+    font-size: 1.8rem;
+  }
+
+  .things-subtitle {
+    font-size: 0.9rem;
+    padding: 12px 18px;
+  }
+
+  .love-cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+
+  .love-card {
+    padding: 15px;
+    min-height: 90px;
+  }
+
+  .love-text {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .love-cards-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .love-card {
+    padding: 12px;
+    min-height: 80px;
+  }
+
+  .love-text {
+    font-size: 0.8rem;
+  }
+
+  .things-title {
+    font-size: 1.5rem;
+  }
+}

@@ -37,7 +37,7 @@
 .image-container {
   position: relative;
   width: 100%;
-  padding-top: 75%; /* 4:3 Aspect Ratio */
+  /* Remove padding-top to allow natural height */
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
@@ -45,12 +45,11 @@
 }
 
 .slide-image {
-  position: absolute;
-  top: 0;
-  left: 0;
+  /* Remove position: absolute */
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto; /* Natural height */
+  border-radius: 15px;
   transition: opacity 0.5s ease-in-out;
 }
 
@@ -60,6 +59,10 @@
   background: rgba(255, 255, 255, 0.8);
   border-radius: 12px;
   border-left: 4px solid #ffb6c1;
+  width: 100%;
+  height: auto; /* Explicitly auto height */
+  min-height: fit-content; /* Ensures it fits content */
+  box-sizing: border-box;
 }
 
 .caption-text {
@@ -69,7 +72,10 @@
   font-size: 1.1rem;
   margin: 0;
   line-height: 1.5;
-}
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal; /* Allows text to wrap */
+}s
 
 .nav-button {
   background: linear-gradient(135deg, #ffb6c1 0%, #ff69b4 100%);

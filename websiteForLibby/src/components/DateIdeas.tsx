@@ -12,10 +12,10 @@ const DateIdeas: React.FC = () => {
   const dateIdeas: DateIdea[] = [
     { emoji: '🎬', text: 'Netflix party + video call (I\'ll let you pick... maybe)' },
     { emoji: '🍕', text: 'Order the same food together & judge each other\'s eating habits' },
-    { emoji: '🌙', text: 'Late night talks that somehow turn into sleeping on call' },
-    { emoji: '🎵', text: 'Playlist exchange & argue about music taste (you\'re wrong btw)' },
+    { emoji: '🌙', text: 'Play cards and loser has to dare' },
+    { emoji: '🎵', text: 'Playlist exchange & argue about music taste' },
     { emoji: '🤳', text: 'Send me your selfies so I can simp shamelessly 😊' },
-    { emoji: '🎮', text: 'Play games together & watch you absolutely destroy me' },
+    { emoji: '🎮', text: 'Finish our minecraft house' },
     { emoji: '👩‍🍳', text: 'Cook the same recipe on video call & pretend we\'re MasterChef' },
     { emoji: '🌅', text: 'Watch the sunrise/sunset together from different places' },
     { emoji: '📖', text: 'Read each other bedtime stories until one of us falls asleep' },
