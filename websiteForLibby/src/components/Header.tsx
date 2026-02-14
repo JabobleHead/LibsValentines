@@ -116,7 +116,7 @@ const Valentine: React.FC = () => {
         <div className="screen accepted-screen">
           <div className="party-emoji">🎉</div>
           
-          <h1 className="accepted-title">Good choice my baby 😌</h1>
+          <h1 className="accepted-title">Good choice my lover 😌</h1>
           
           <p className="accepted-subtitle">
             You just unlocked unlimited hugs, kisses, and cuddles
