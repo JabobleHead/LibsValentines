@@ -11,11 +11,11 @@ import ThingsILove from './components/ThingsILoveAboutYou';
 const photos = [
   {
     src: '/Photos/DodgeParkWalk.jpeg',
-    caption: 'I remember we had plans to hang out all afternoon but I had to work the lunch shift. Instead we still got to go on a walk around dodge park. I loved how you were willing to adapt and were understanding about the situation. I loved making the most of it'
+    caption: 'I remember we had plans to hang out all afternoon, but I had to work the lunch shift. Instead, we still got to go on a walk around Dodge Park. I loved how you were willing to adapt and were understanding about the situation. I loved making the most of it.'
   },
   {
     src: '/Photos/FirstTimeIGotYouFlowers.jpeg',
-    caption: 'I remember comming home from school and just thinking I had to something to surprise you'
+    caption: 'I remember comming home from school and just thinking I had to do something to surprise you, even though it was just something small.'
   }
 ];
 

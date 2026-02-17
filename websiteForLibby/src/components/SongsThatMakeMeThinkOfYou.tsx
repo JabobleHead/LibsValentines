@@ -19,13 +19,19 @@ const SpotifySongs: React.FC = () => {
       {
       id: '2',
       spotifyId: '6qqrTXSdwiJaq8SO0X2lSe?si=c6718d4091254227', // Replace with your track ID
-      note: "I can't hear without just thinking of you and how you make me feel"
+      note: "I can't hear this song without just thinking of you and how you make me feel"
     },
     {
       id: '3',
       spotifyId: '3pBYIDSYwHpGMjq0nss6KZ?si=196dfb97447d4eed', // Replace with your track ID
       note: "Your always worth the wait"
+    },
+    {
+      id: '4',
+      spotifyId: '2afCBiru10AFckfOa49wIa?si=e660f9ec77b24ce1',
+      note: "Its You & I aganist the world, every single day"
     }
+
   
   ];
 

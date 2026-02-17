@@ -23,6 +23,9 @@ const ThingsILove: React.FC = () => {
     { id: 10, text: "The way your laugh has two stages", emoji: "🥰" },
     { id: 11, text: "How you always know what to say", emoji: "💬" },
     { id: 12, text: "You always match my random thoughts", emoji: "🌙" },
+    { id: 13, text: "Your beautiful smile", emoji: "😀"},
+    { id: 14, text: "Your lovely brown eyes", emoji: "👁️"},
+    { id: 15, text: "How you always match my energy", emoji: "⚡️"},
   ];
 
   return (
