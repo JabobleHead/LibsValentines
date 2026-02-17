@@ -6,6 +6,8 @@ import DateIdeas from "./components/DateIdeas"
 import PhotoSlideshow from './components/FavoritePic';
 import Spotify from "./components/SongsThatMakeMeThinkOfYou"
 import ThingsILove from './components/ThingsILoveAboutYou';
+import EgyptianRatScrew from './components/EgyptianRatScrew/EqyptianRatScrew';
+
 
 
 const photos = [
@@ -30,7 +32,7 @@ function App() {
       <PhotoSlideshow photos={photos} autoPlayInterval={16000} />
       <Spotify/>
       <ThingsILove/>
-
+      <EgyptianRatScrew/>
     </div>
       
     </>
