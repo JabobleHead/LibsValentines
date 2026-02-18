@@ -188,17 +188,27 @@ const GameBoard: React.FC<GameBoardProps> = ({
             <div className="ers-pile-empty">Pile empty</div>
           ) : (
             <div className="ers-pile-stack">
-              {topCards.map((card, i) => (
-                <CardComponent
-                  key={card.id + i}
-                  card={card}
-                  style={{
-                    position: 'absolute',
-                    transform: `rotate(${(i - 1) * 5}deg) translate(${(i - 1) * 3}px, ${(i - 1) * 2}px)`,
-                    zIndex: i,
-                  }}
-                />
-              ))}
+              {topCards.map((card, i) => {
+                // NEW: If this is the most recently played card and not yet revealed,
+                // show it face-down UNLESS you're the one who played it
+                const isLatestCard = i === topCards.length - 1;
+                const iPlayedIt = gameState.players[myIndex]?.id === playerId &&
+                  myIndex === (gameState as any).currentPlayerIndex; // rough check
+                const showFaceDown = isLatestCard && !gameState.cardRevealed;
+
+                return (
+                  <CardComponent
+                    key={card.id + i}
+                    card={card}
+                    faceDown={showFaceDown}
+                    style={{
+                      position: 'absolute',
+                      transform: `rotate(${(i - 1) * 5}deg) translate(${(i - 1) * 3}px, ${(i - 1) * 2}px)`,
+                      zIndex: i,
+                    }}
+                  />
+                );
+              })}
               {cardFlip && <div className="ers-flip-anim" />}
             </div>
           )}
@@ -210,6 +220,21 @@ const GameBoard: React.FC<GameBoardProps> = ({
             {slapResult.valid
               ? `✅ ${slapResult.slapperName}: ${slapResult.reason}`
               : `❌ ${slapResult.slapperName}: ${slapResult.reason}`}
+
+            {/* NEW: Show the burned card */}
+            {!slapResult.valid && slapResult.burnedCard && (
+              <div className="ers-burned-card">
+                <span className="ers-burned-label">Burned:</span>
+                <CardComponent card={slapResult.burnedCard} style={{ width: '60px', height: '88px' }} />
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* NEW: Also show lastBurnedCard from game state */}
+        {gameState.lastBurnedCard && !slapResult && (
+          <div className="ers-burned-info">
+            Last burned: {gameState.lastBurnedCard.rank} of {gameState.lastBurnedCard.suit}
           </div>
         )}
       </div>

@@ -712,3 +712,37 @@
   animation: pulse 1s ease infinite;
   text-align: center;
 }
+/* ── Burned Card Display ── */
+.ers-burned-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: center;
+}
+
+.ers-burned-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ers-danger);
+}
+
+.ers-burned-info {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: var(--ers-text-dim);
+  font-style: italic;
+  text-align: center;
+}
+
+.ers-slap-feedback {
+  margin-top: 12px;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  animation: fadeSlap 2s ease forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -19,7 +19,9 @@ export interface SlapResult {
   slapperId: string;
   slapperName: string;
   reason: string;
+  burnedCard?: Card;       // NEW
 }
+
 
 // NEW
 export interface PendingCollection {
@@ -41,12 +43,14 @@ export interface GameState {
   centralPileCount: number;
   currentPlayerIndex: number;
   challenge: ChallengeState | null;
-  pendingCollection: PendingCollection | null; // NEW
+  pendingCollection: PendingCollection | null;
   gameStarted: boolean;
   gameOver: boolean;
   winner: string | null;
   lastAction: string;
   lastSlapResult: SlapResult | null;
   lastCardPlayed: Card | null;
+  lastBurnedCard: Card | null;  // NEW
+  cardRevealed: boolean;        // NEW
   canSlap: boolean;
 }

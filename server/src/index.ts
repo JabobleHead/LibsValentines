@@ -134,7 +134,7 @@ io.on('connection', (socket: Socket) => {
   });
 
   // ── Play Card ──
-  socket.on('play-card', () => {
+    socket.on('play-card', () => {
     if (!currentRoom) return;
     const game = rooms.get(currentRoom);
     if (!game) return;
@@ -146,20 +146,20 @@ io.on('connection', (socket: Socket) => {
       return;
     }
 
-    broadcastState(game);
+    if (result.needsRevealDelay) {
+      // First broadcast: card is face-down for opponent
+      broadcastState(game);
+
+      // After 200ms: reveal the card to everyone
+      setTimeout(() => {
+        game.revealCard();
+        broadcastState(game);
+      }, 200);
+    } else {
+      broadcastState(game);
+    }
   });
 
-  // ── Slap ──
-  socket.on('slap', () => {
-    if (!currentRoom) return;
-    const game = rooms.get(currentRoom);
-    if (!game) return;
-
-    const result = game.slap(socket.id);
-
-    io.to(currentRoom).emit('slap-result', result);
-    broadcastState(game);
-  });
 
   // ── Collect Pile (NEW) ──
   socket.on('collect-pile', () => {

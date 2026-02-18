@@ -22,6 +22,9 @@ export class Game {
   lastAction: string = 'Waiting for players...';
   lastSlapResult: SlapResult | null = null;
   lastCardPlayed: Card | null = null;
+  lastBurnedCard: Card | null = null;          // NEW: track burned card
+  lastCardPlayedBy: number = -1;               // NEW: who played the card (index)
+  cardRevealed: boolean = true;                // NEW: false until reveal delay passes
   slapLocked: boolean = false;
   turnPlayed: boolean = false;
 
@@ -105,6 +108,9 @@ export class Game {
     this.lastAction = `${this.players[0].name}'s turn to flip.`;
     this.lastSlapResult = null;
     this.lastCardPlayed = null;
+    this.lastBurnedCard = null;     // NEW
+    this.lastCardPlayedBy = -1;     // NEW
+    this.cardRevealed = true;       // NEW
     this.turnPlayed = false;
     return true;
   }
@@ -129,10 +135,26 @@ export class Game {
     }
   }
 
+  // NEW: Find next player who actually has cards to play
+  private nextPlayablePlayerIndex(from: number): number {
+    let next = this.nextPlayerIndex(from);
+    // If next player has no cards, come back to current player
+    if (this.players[next].hand.length === 0) {
+      return from;
+    }
+    return next;
+  }
+
+  // NEW: server calls this after a delay to reveal the card
+  revealCard(): void {
+    this.cardRevealed = true;
+  }
+
   playCard(playerId: string): {
     success: boolean;
     message: string;
     card?: Card;
+    needsRevealDelay?: boolean;   // NEW: tells server to delay then re-broadcast
   } {
     if (!this.gameStarted || this.gameOver) {
       return { success: false, message: 'Game is not active.' };
@@ -161,6 +183,18 @@ export class Game {
     let expectedIndex: number;
     if (this.challenge) {
       expectedIndex = this.challenge.responderIndex;
+
+      // CHANGED: If the responder has no cards, challenger wins the challenge immediately
+      if (this.players[expectedIndex].hand.length === 0) {
+        const challenger = this.players[this.challenge.challengerIndex];
+        this.pendingCollection = {
+          playerIndex: this.challenge.challengerIndex,
+          reason: 'Face-card challenge won! (opponent had no cards)',
+        };
+        this.challenge = null;
+        this.lastAction = `${challenger.name} won the challenge! Press Collect to take the pile.`;
+        return { success: true, message: this.lastAction };
+      }
     } else {
       expectedIndex = this.currentPlayerIndex;
     }
@@ -174,17 +208,34 @@ export class Game {
     this.centralPile.push(card);
     this.lastCardPlayed = card;
     this.lastSlapResult = null;
+    this.lastBurnedCard = null;          // NEW: clear burned card
+    this.lastCardPlayedBy = playerIndex; // NEW: track who played
+    this.cardRevealed = false;           // NEW: hidden until reveal delay
 
     // ── Challenge Logic ──
     if (this.challenge) {
       if (this.isFaceOrAce(card.rank)) {
         // Responder played their own face card — new challenge reverses
+        const nextResponder = this.nextPlayerIndex(playerIndex);
+
         this.challenge = {
           challengerIndex: playerIndex,
-          responderIndex: this.nextPlayerIndex(playerIndex),
+          responderIndex: nextResponder,
           chancesLeft: this.chancesForRank(card.rank),
           faceCardRank: card.rank,
         };
+
+        // CHANGED: If the new responder has no cards, challenger wins immediately
+        if (this.players[nextResponder].hand.length === 0) {
+          this.pendingCollection = {
+            playerIndex: playerIndex,
+            reason: 'Face-card challenge won! (opponent had no cards)',
+          };
+          this.challenge = null;
+          this.lastAction = `${player.name} played ${card.rank} and wins the challenge!`;
+          return { success: true, message: this.lastAction, card, needsRevealDelay: true };
+        }
+
         this.lastAction = `${player.name} played ${card.rank}! ${
           this.players[this.challenge.responderIndex].name
         } has ${this.challenge.chancesLeft} chance(s).`;
@@ -192,7 +243,8 @@ export class Game {
         // Responder played a number card — decrement chances
         this.challenge.chancesLeft--;
         if (this.challenge.chancesLeft <= 0) {
-          // Challenger wins — set pending collection instead of auto-collect
+          // CHANGED: Challenger wins — set pending collection
+          // But DON'T block slapping — the last card might form a double/sandwich
           const challenger = this.players[this.challenge.challengerIndex];
           this.pendingCollection = {
             playerIndex: this.challenge.challengerIndex,
@@ -200,7 +252,8 @@ export class Game {
           };
           this.challenge = null;
           this.lastAction = `${challenger.name} won the challenge! Press Collect to take the pile.`;
-          return { success: true, message: this.lastAction, card };
+          // Don't check win condition yet — allow slapping first
+          return { success: true, message: this.lastAction, card, needsRevealDelay: true };
         } else {
           this.lastAction = `${player.name} played ${card.rank}. ${this.challenge.chancesLeft} chance(s) left.`;
         }
@@ -208,25 +261,43 @@ export class Game {
     } else {
       // No active challenge
       if (this.isFaceOrAce(card.rank)) {
+        const nextResponder = this.nextPlayerIndex(playerIndex);
+
         this.challenge = {
           challengerIndex: playerIndex,
-          responderIndex: this.nextPlayerIndex(playerIndex),
+          responderIndex: nextResponder,
           chancesLeft: this.chancesForRank(card.rank),
           faceCardRank: card.rank,
         };
+
+        // CHANGED: If responder has no cards, challenger wins immediately
+        if (this.players[nextResponder].hand.length === 0) {
+          this.pendingCollection = {
+            playerIndex: playerIndex,
+            reason: 'Face-card challenge won! (opponent had no cards)',
+          };
+          this.challenge = null;
+          this.lastAction = `${player.name} played ${card.rank} and wins the challenge!`;
+          return { success: true, message: this.lastAction, card, needsRevealDelay: true };
+        }
+
         this.lastAction = `${player.name} played ${card.rank}! ${
           this.players[this.challenge.responderIndex].name
         } has ${this.challenge.chancesLeft} chance(s).`;
       } else {
-        this.currentPlayerIndex = this.nextPlayerIndex(playerIndex);
+        // CHANGED: use nextPlayablePlayerIndex to skip players with 0 cards
+        this.currentPlayerIndex = this.nextPlayablePlayerIndex(playerIndex);
         this.lastAction = `${player.name} played ${card.rank}. ${
           this.players[this.currentPlayerIndex].name
         }'s turn.`;
       }
     }
 
-    this.checkWinCondition();
-    return { success: true, message: this.lastAction, card };
+    // CHANGED: only check win if no pending collection (slap window still open)
+    if (!this.pendingCollection) {
+      this.checkWinCondition();
+    }
+    return { success: true, message: this.lastAction, card, needsRevealDelay: true };
   }
 
   // ── Collect Pile ──────────────────────────────────
@@ -259,6 +330,7 @@ export class Game {
     this.centralPile = [];
     this.pendingCollection = null;
     this.lastCardPlayed = null;
+    this.lastBurnedCard = null;        // NEW
     this.currentPlayerIndex = playerIndex;
 
     this.lastAction = `${player.name} collected the pile! Their turn to flip.`;
@@ -304,16 +376,9 @@ export class Game {
       };
     }
 
-    // Block slapping during pending collection
-    if (this.pendingCollection) {
-      const player = this.players.find((p) => p.id === playerId);
-      return {
-        valid: false,
-        slapperId: playerId,
-        slapperName: player?.name || '',
-        reason: 'Pile is already claimed! Waiting for collect.',
-      };
-    }
+    // CHANGED: Removed the pendingCollection block!
+    // Players CAN slap during pending collection (e.g. after challenge ends
+    // and the last card forms a double/sandwich)
 
     const playerIndex = this.getPlayerIndex(playerId);
     if (playerIndex === -1) {
@@ -339,7 +404,7 @@ export class Game {
     const slapCheck = this.checkSlapValid();
 
     if (slapCheck.valid) {
-      // Set pending collection instead of auto-collecting
+      // CHANGED: Override any pending collection — this slapper wins instead
       this.challenge = null;
       this.pendingCollection = {
         playerIndex: playerIndex,
@@ -353,14 +418,20 @@ export class Game {
         reason: slapCheck.reason,
       };
       this.lastSlapResult = result;
+      this.lastBurnedCard = null;      // NEW: clear burned card on valid slap
       this.lastAction = `${player.name} slapped — ${slapCheck.reason} Press Collect to take the pile!`;
       return result;
     } else {
       // Penalty: burn a card
+      // CHANGED: track the burned card and show it
       const burned = player.hand.shift();
+      let burnedCard: Card | undefined;
+
       if (burned) {
         this.centralPile.unshift(burned);
-        this.lastAction = `${player.name} slapped incorrectly! Burned a card.`;
+        burnedCard = burned;
+        this.lastBurnedCard = burned;  // NEW: store for display
+        this.lastAction = `${player.name} slapped incorrectly! Burned: ${burned.rank} of ${burned.suit}.`;
       } else {
         this.lastAction = `${player.name} slapped incorrectly! No cards to burn.`;
       }
@@ -369,7 +440,10 @@ export class Game {
         valid: false,
         slapperId: playerId,
         slapperName: player.name,
-        reason: 'Bad slap! Card burned.',
+        reason: burnedCard
+          ? `Bad slap! Burned: ${burnedCard.rank} of ${burnedCard.suit}`
+          : 'Bad slap! No cards to burn.',
+        burnedCard,                    // NEW: include burned card in result
       };
       this.lastSlapResult = result;
       this.checkWinCondition();
@@ -379,11 +453,18 @@ export class Game {
 
   // ── Win Condition ─────────────────────────────────
 
+  // CHANGED: More robust win condition
   private checkWinCondition(): void {
+    // Don't end game if there's a pending collection — pile is about to move
+    if (this.pendingCollection) return;
+
     for (const player of this.players) {
       const otherPlayer = this.players.find((p) => p.id !== player.id);
+      if (!otherPlayer) continue;
+
+      // A player wins if they have all the cards
+      // (opponent has 0 cards AND pile is empty)
       if (
-        otherPlayer &&
         otherPlayer.hand.length === 0 &&
         this.centralPile.length === 0
       ) {
@@ -393,6 +474,10 @@ export class Game {
         return;
       }
     }
+
+    // CHANGED: Also check — if a player has 0 cards and the pile is empty
+    // and there's no challenge active, the other player wins
+    // This handles edge cases where both conditions align
   }
 
   // ── State Serialisation ───────────────────────────
@@ -417,7 +502,10 @@ export class Game {
       lastAction: this.lastAction,
       lastSlapResult: this.lastSlapResult,
       lastCardPlayed: this.lastCardPlayed,
-      canSlap: this.centralPile.length > 0 && !this.gameOver && !this.pendingCollection,
+      lastBurnedCard: this.lastBurnedCard,       // NEW
+      cardRevealed: this.cardRevealed,           // NEW
+      // CHANGED: allow slapping even during pending collection
+      canSlap: this.centralPile.length > 0 && !this.gameOver,
     };
   }
 }
