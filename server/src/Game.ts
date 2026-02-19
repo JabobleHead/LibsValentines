@@ -160,7 +160,7 @@ playCard(playerId: string): {
     if (!this.gameStarted || this.gameOver) {
       return { success: false, message: 'Game is not active.' };
     }
-
+        this.slapLocked = false;
     // Block play while someone needs to collect
     if (this.pendingCollection) {
       const collector = this.players[this.pendingCollection.playerIndex];
@@ -353,6 +353,8 @@ playCard(playerId: string): {
     this.lastCardPlayed = null;
     this.lastBurnedCard = null;
     this.currentPlayerIndex = playerIndex;
+    this.slapLocked = false;            // ← NEW: unlock slaps after collection
+
 
     this.lastAction = `${player.name} collected the pile! Their turn to flip.`;
     this.checkWinCondition();
@@ -401,6 +403,16 @@ playCard(playerId: string): {
     // Players CAN slap during pending collection (e.g. after challenge ends
     // and the last card forms a double/sandwich)
 
+    if (this.slapLocked) {
+      const player = this.players.find(p => p.id === playerId);
+      return {
+        valid: false,
+        slapperId: playerId,
+        slapperName: player?.name || '',
+        reason: 'Someone already slapped!',
+      };
+    }
+    this.slapLocked = true;
     const playerIndex = this.getPlayerIndex(playerId);
     if (playerIndex === -1) {
       return {
