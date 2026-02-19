@@ -160,6 +160,28 @@ io.on('connection', (socket: Socket) => {
     }
   });
 
+    // ── Slap ──
+  socket.on('slap', () => {
+    if (!currentRoom) return;
+    const game = rooms.get(currentRoom);
+    if (!game) return;
+
+    if (!game.cardRevealed) {
+      socket.emit('error-msg', { message: 'Wait for the card to be revealed!' });
+      return;
+    }
+
+    const result = game.slap(socket.id);
+
+    io.to(game.roomCode).emit('slap-result', result);
+    broadcastState(game);
+
+    if (result.valid) {
+      console.log(`[Slap] VALID by ${result.slapperName} in ${currentRoom} — ${result.reason}`);
+    } else {
+      console.log(`[Slap] INVALID by ${result.slapperName} in ${currentRoom} — ${result.reason}`);
+    }
+  });
 
   // ── Collect Pile (NEW) ──
   socket.on('collect-pile', () => {
